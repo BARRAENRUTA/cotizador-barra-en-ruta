@@ -93,7 +93,7 @@ Eventos dentro de Xalapa sin costo extra, eventos fuera de la ciudad se cotizan 
 </div></div>
 
 <script>
-const PRICES={"25": {"Palomas": 1100, "Vampiritos": 1150, "Margaritas": 1950, "Tequila Sunrise": 1100, "Azulitos": 1850, "Rojitos": 1850, "Pantera Rosa": 1200, "Cuba Libre": 1200, "Mojitos": 1550, "Piña Colada": 1900, "Barbados Surprise": 1200, "Paraíso Verde": 2000, "Micheladas": 1300}, "50": {"Palomas": 2500, "Vampiritos": 2600, "Margaritas": 4200, "Tequila Sunrise": 2500, "Azulitos": 4000, "Rojitos": 4000, "Pantera Rosa": 2700, "Cuba Libre": 2700, "Mojitos": 3400, "Piña Colada": 4100, "Barbados Surprise": 2700, "Paraíso Verde": 4300, "Micheladas": 2900}, "75": {"Palomas": 3600, "Vampiritos": 3750, "Margaritas": 6150, "Tequila Sunrise": 3600, "Azulitos": 5850, "Rojitos": 5850, "Pantera Rosa": 3900, "Cuba Libre": 3900, "Mojitos": 4950, "Piña Colada": 6000, "Barbados Surprise": 3900, "Paraíso Verde": 6300}, "100": {"Palomas": 4700, "Vampiritos": 4900, "Margaritas": 8100, "Tequila Sunrise": 4700, "Azulitos": 7700, "Rojitos": 7700, "Pantera Rosa": 5100, "Cuba Libre": 5100, "Mojitos": 6500, "Piña Colada": 7900, "Barbados Surprise": 5100, "Paraíso Verde": 8300, "Micheladas": 5500}};
+const PRICES={"25":{"Palomas":1100,"Vampiritos":1150,"Margaritas":1950,"Tequila Sunrise":1100,"Azulitos":1850,"Rojitos":1850,"Pantera Rosa":1200,"Cuba Libre":1200,"Mojitos":1550,"Piña Colada":1900,"Barbados Surprise":1200,"Paraíso Verde":2000,"Micheladas":1300}};
 const OPTIONS=[25,50,75,100];
 const NAMES=Object.keys(PRICES[25]);
 let total=0, rows=[];
@@ -105,7 +105,7 @@ function maxForRow(i){
 }
 function validOptions(i){
   const rem=maxForRow(i);
-  return OPTIONS.filter(q=>q<=rem && PRICES[q] && Object.keys(PRICES[q]).length);
+  return OPTIONS.filter(q=>q<=rem);
 }
 function draw(){
   const box=document.getElementById("rows"); box.innerHTML="";
@@ -140,8 +140,9 @@ function update(){
   const complete=used===total;
   let sum=0, parts=[];
   rows.forEach(r=>{
-    const p=PRICES[r.qty]?.[r.drink];
-    if(p==null)return;
+    const base=PRICES[25]?.[r.drink];
+    if(base==null)return;
+    const p=(r.qty/25)*base;
     sum+=p;parts.push(`${r.qty} ${r.drink}`);
   });
   const result=document.getElementById("result");
